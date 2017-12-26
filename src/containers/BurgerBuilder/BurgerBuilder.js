@@ -33,6 +33,10 @@ export default class BurgerBuilder extends Component {
     this.setState((state, props) => ({ purchasing: false }));
   };
 
+  purchaseContinueHandler = () => {
+    console.log('Bon apetite');
+  };
+
   updatePuchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
       .map(igKey => ingredients[igKey])
@@ -105,7 +109,12 @@ export default class BurgerBuilder extends Component {
           show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}
         >
-          <OrderSummary ingredients={this.state.ingredients} />
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            purchaseCanceled={this.purchaseCancelHandler}
+            purchaseContinued={this.purchaseContinueHandler}
+            totalPrice={this.state.totalPrice}
+          />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
