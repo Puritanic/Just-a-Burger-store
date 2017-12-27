@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import axios from '../../axios-orders';
 import Aux from '../../hoc/Wrapper';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
@@ -12,7 +15,7 @@ const INGREDIENT_PRICES = {
   bacon: 0.7
 };
 
-export default class BurgerBuilder extends Component {
+class BurgerBuilder extends Component {
   state = {
     ingredients: {
       salad: 0,
@@ -22,7 +25,8 @@ export default class BurgerBuilder extends Component {
     },
     totalPrice: 4,
     purchasable: false,
-    purchasing: false
+    purchasing: false,
+    loading: false
   };
 
   purchaseHandler = (params) => {
@@ -34,7 +38,34 @@ export default class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
+    this.setState((state, props) => ({ loading: true }));
     console.log('Bon apetite');
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: 'Edward Turner',
+        address: { street: '999 Retlor Street', zipcode: 'BZ123665' },
+        contactNumber: '(782) 310-5864'
+      },
+      deliveryMethod: 'PlusPlus'
+    };
+    axios
+      .post('/orders.json', order)
+      .then((response) => {
+        console.log(response);
+        this.setState((state, props) => ({
+          loading: false,
+          purchasing: false
+        }));
+      })
+      .catch((err) => {
+        this.setState((state, props) => ({
+          loading: false,
+          purchasing: false
+        }));
+        console.log(err);
+      });
   };
 
   updatePuchaseState = (ingredients) => {
@@ -98,6 +129,17 @@ export default class BurgerBuilder extends Component {
     const disabledInfo = {
       ...this.state.ingredients
     };
+    let orderSummary = (
+      <OrderSummary
+        ingredients={this.state.ingredients}
+        purchaseCanceled={this.purchaseCancelHandler}
+        purchaseContinued={this.purchaseContinueHandler}
+        totalPrice={this.state.totalPrice}
+      />
+    );
+    if (this.state.loading) {
+      orderSummary = <Spinner />;
+    }
     // eslint-disable-next-line guard-for-in
     for (const key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
@@ -109,12 +151,7 @@ export default class BurgerBuilder extends Component {
           show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}
         >
-          <OrderSummary
-            ingredients={this.state.ingredients}
-            purchaseCanceled={this.purchaseCancelHandler}
-            purchaseContinued={this.purchaseContinueHandler}
-            totalPrice={this.state.totalPrice}
-          />
+          {orderSummary}
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
@@ -129,3 +166,5 @@ export default class BurgerBuilder extends Component {
     );
   }
 }
+
+export default withErrorHandler(BurgerBuilder, axios);
