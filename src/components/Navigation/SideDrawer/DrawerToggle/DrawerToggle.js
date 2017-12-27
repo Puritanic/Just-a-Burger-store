@@ -6,7 +6,7 @@ const DrawerToggle = props => (
   <div
     className={classes.DrawerToggle}
     onClick={props.clicked}
-    onKeydown={props.clicked}
+    onKeyDown={props.clicked}
   >
     <div />
     <div />
