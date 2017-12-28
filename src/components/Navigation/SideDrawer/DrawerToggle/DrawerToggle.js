@@ -1,8 +1,9 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
+
 import classes from './DrawerToggle.css';
 
-const DrawerToggle = props => (
+const drawerToggle = props => (
+  // eslint-disable-next-line
   <div
     className={classes.DrawerToggle}
     onClick={props.clicked}
@@ -14,4 +15,4 @@ const DrawerToggle = props => (
   </div>
 );
 
-export default DrawerToggle;
+export default drawerToggle;

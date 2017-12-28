@@ -1,46 +1,48 @@
 import React, { Component } from 'react';
-import Modal from '../../components/UI/Modal/Modal';
-import Aux from '../Wrapper';
 
-const withErrorHandler = (WrappedComponent, axios) =>
-  class extends Component {
+import Modal from '../../components/UI/Modal/Modal';
+import Aux from '../Aux/Aux';
+
+const withErrorHandler = (WrappedComponent, axios) => class extends Component {
     state = {
-      err: null
+      error: null
     };
 
-    componentWillMount = () => {
-      this.reqIntercept = axios.interceptors.request.use((req) => {
-        this.setState((state, props) => ({ err: null }));
-        // in request interceptor we have to return request in order for request to continue
+    componentWillMount() {
+      this.reqInterceptor = axios.interceptors.request.use((req) => {
+        this.setState({ error: null });
         return req;
       });
-      this.resIntercept = axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(
         res => res,
-        (err) => {
-          this.setState((state, props) => ({ err }));
+        (error) => {
+          this.setState({ error });
         }
       );
-    };
+    }
 
-    componentWillUnmount = () => {
-      axios.interceptors.request.eject(this.reqIntercept);
-      axios.interceptors.response.eject(this.resIntercept);
-    };
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
+    }
 
-    errConfirmedHandler = () => {
-      this.setState((state, props) => ({ err: null }));
+    errorConfirmedHandler = () => {
+      this.setState({ error: null });
     };
 
     render() {
       return (
         <Aux>
-          <Modal show={this.state.err} modalClosed={this.errConfirmedHandler}>
-            {this.state.err && this.state.err.message}
+          <Modal
+            show={this.state.error}
+            modalClosed={this.errorConfirmedHandler}
+          >
+            {this.state.error ? this.state.error.message : null}
           </Modal>
           <WrappedComponent {...this.props} />
         </Aux>
       );
     }
-  };
+};
 
 export default withErrorHandler;

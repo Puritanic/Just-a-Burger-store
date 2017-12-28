@@ -1,10 +1,11 @@
 import React from 'react';
+
 import classes from './Backdrop.css';
 
-const Backdrop = props =>
+const backdrop = props =>
   (props.show ? (
     // eslint-disable-next-line
     <div className={classes.Backdrop} onClick={props.clicked} />
   ) : null);
 
-export default Backdrop;
+export default backdrop;
