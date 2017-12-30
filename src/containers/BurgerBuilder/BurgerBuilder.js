@@ -16,8 +16,6 @@ class BurgerBuilder extends Component {
   //     this.state = {...}
   // } or like this in React 16:
   state = {
-    totalPrice: 4,
-    purchasable: false,
     purchasing: false,
     loading: false,
     error: false
@@ -35,12 +33,13 @@ class BurgerBuilder extends Component {
     //   });
   }
 
-  updatePurchaseState(ingredients) {
+  updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
       .map(igKey => ingredients[igKey])
       .reduce((prev, curr) => prev + curr, 0);
-    this.setState({ purchasable: sum > 0 });
-  }
+
+    return sum > 0;
+  };
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -51,14 +50,12 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    // alert('You continue!');
-
     const queryParams = [];
     // eslint-disable-next-line
     for (const i in this.state.ingredients) {
       queryParams.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`);
     }
-    queryParams.push(`price=${this.state.totalPrice}`);
+    queryParams.push(`price=${this.props.totalPrice}`);
     const queryString = queryParams.join('&');
     this.props.history.push({
       pathname: '/checkout',
@@ -89,16 +86,16 @@ class BurgerBuilder extends Component {
             ingredientAdded={this.props.addIngredient}
             ingredientRemoved={this.props.removeIngredient}
             disabled={disabledInfo}
-            purchasable={this.state.purchasable}
+            purchasable={this.updatePurchaseState(this.props.ingredients)}
             ordered={this.purchaseHandler}
-            price={this.state.totalPrice}
+            price={this.props.totalPrice}
           />
         </Aux>
       );
       orderSummary = (
         <OrderSummary
           ingredients={this.props.ingredients}
-          price={this.state.totalPrice}
+          price={this.props.totalPrice}
           purchaseCancelled={this.purchaseCancelHandler}
           purchaseContinued={this.purchaseContinueHandler}
         />
@@ -123,7 +120,8 @@ class BurgerBuilder extends Component {
 }
 
 const mapStateToProps = state => ({
-  ingredients: state.ingredients
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice
 });
 
 const mapDispatchToProps = dispatch => ({
