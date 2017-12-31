@@ -9,6 +9,10 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as types from '../../store/types';
 import axios from '../../axios-orders';
+import {
+  addIngredient,
+  removeIngredient
+} from '../../store/actions/burgerActions';
 
 class BurgerBuilder extends Component {
   // constructor(props) {
@@ -16,21 +20,11 @@ class BurgerBuilder extends Component {
   //     this.state = {...}
   // } or like this in React 16:
   state = {
-    purchasing: false,
-    loading: false,
-    error: false
+    purchasing: false
   };
 
   componentDidMount() {
     console.log(this.props);
-    // axios
-    //   .get('https://burger-store.firebaseio.com/ingredients.json')
-    //   .then((response) => {
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ error: true });
-    //   });
   }
 
   updatePurchaseState = (ingredients) => {
@@ -50,17 +44,7 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    const queryParams = [];
-    // eslint-disable-next-line
-    for (const i in this.state.ingredients) {
-      queryParams.push(`${encodeURIComponent(i)}=${encodeURIComponent(this.state.ingredients[i])}`);
-    }
-    queryParams.push(`price=${this.props.totalPrice}`);
-    const queryString = queryParams.join('&');
-    this.props.history.push({
-      pathname: '/checkout',
-      search: `?${queryString}`
-    });
+    this.props.history.push('/checkout');
   };
 
   render() {
@@ -125,10 +109,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addIngredient: ingName =>
-    dispatch({ type: types.ADD_INGREDIENT, ingredientName: ingName }),
-  removeIngredient: ingName =>
-    dispatch({ type: types.REMOVE_INGREDIENT, ingredientName: ingName })
+  addIngredient: ingName => dispatch(addIngredient(ingName)),
+  removeIngredient: ingName => dispatch(removeIngredient(ingName))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

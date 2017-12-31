@@ -1,13 +1,10 @@
-import * as types from './types';
+import * as types from '../types';
 
 const initialState = {
-  ingredients: {
-    salad: 0,
-    bacon: 0,
-    cheese: 0,
-    meat: 1
-  },
-  totalPrice: 3.3
+  ingredients: null,
+  totalPrice: 3.3,
+  loading: false,
+  error: false
 };
 
 const INGREDIENT_PRICES = {
