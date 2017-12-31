@@ -7,11 +7,11 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import * as types from '../../store/types';
 import axios from '../../axios-orders';
 import {
   addIngredient,
-  removeIngredient
+  removeIngredient,
+  initIngredients
 } from '../../store/actions/burgerActions';
 
 class BurgerBuilder extends Component {
@@ -25,6 +25,7 @@ class BurgerBuilder extends Component {
 
   componentDidMount() {
     console.log(this.props);
+    this.props.initIngredients();
   }
 
   updatePurchaseState = (ingredients) => {
@@ -56,7 +57,7 @@ class BurgerBuilder extends Component {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
     let orderSummary = null;
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can&quot;t be loaded!</p>
     ) : (
       <Spinner />
@@ -85,7 +86,7 @@ class BurgerBuilder extends Component {
         />
       );
     }
-    if (this.state.loading) {
+    if (this.props.loading) {
       orderSummary = <Spinner />;
     }
     // {salad: true, meat: false, ...}
@@ -105,12 +106,14 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => ({
   ingredients: state.ingredients,
-  totalPrice: state.totalPrice
+  totalPrice: state.totalPrice,
+  error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
   addIngredient: ingName => dispatch(addIngredient(ingName)),
-  removeIngredient: ingName => dispatch(removeIngredient(ingName))
+  removeIngredient: ingName => dispatch(removeIngredient(ingName)),
+  initIngredients: () => dispatch(initIngredients())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
