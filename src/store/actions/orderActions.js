@@ -32,3 +32,37 @@ export const initPurchase = orderData => (dispatch) => {
 export const purchaseLoad = () => ({
   type: types.PURCHASE_LOAD
 });
+
+export const fetchOrdersStart = () => ({
+  type: types.PURCHASE_BURGER_START
+});
+
+export const fetchOrdersSuccess = orders => ({
+  type: types.FETCH_ORDERS_SUCCESS,
+  orders
+});
+
+export const fetchOrdersFailure = err => ({
+  type: types.FETCH_ORDERS_FAILURE,
+  err
+});
+
+export const fetchOrders = () => (dispatch) => {
+  dispatch(fetchOrdersStart());
+  axios
+    .get('/orders.json')
+    .then((res) => {
+      const fetchedOrders = [];
+      // eslint-disable-next-line
+      for (const key in res.data) {
+        fetchedOrders.push({
+          ...res.data[key],
+          id: key
+        });
+      }
+      dispatch(fetchOrdersSuccess(fetchedOrders));
+    })
+    .catch((err) => {
+      dispatch(fetchOrdersFailure(err));
+    });
+};

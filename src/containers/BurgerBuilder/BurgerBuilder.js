@@ -13,6 +13,7 @@ import {
   removeIngredient,
   initIngredients
 } from '../../store/actions/burgerActions';
+import { purchaseLoad } from '../../store/actions/orderActions';
 
 class BurgerBuilder extends Component {
   // constructor(props) {
@@ -24,7 +25,7 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
     this.props.initIngredients();
   }
 
@@ -45,6 +46,7 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
+    this.props.purchaseLoad();
     this.props.history.push('/checkout');
   };
 
@@ -113,7 +115,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   addIngredient: ingName => dispatch(addIngredient(ingName)),
   removeIngredient: ingName => dispatch(removeIngredient(ingName)),
-  initIngredients: () => dispatch(initIngredients())
+  initIngredients: () => dispatch(initIngredients()),
+  purchaseLoad: () => dispatch(purchaseLoad())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

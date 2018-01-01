@@ -39,7 +39,13 @@ export default (state = initialState, action) => {
     case types.SET_INGREDIENTS:
       return {
         ...state,
-        ingredients: action.ingredients,
+        ingredients: {
+          salad: action.ingredients.salad,
+          bacon: action.ingredients.bacon,
+          cheese: action.ingredients.cheese,
+          meat: action.ingredients.meat
+        },
+        totalPrice: 3.3,
         error: false
       };
     case types.FETCH_INGREDIENTS_FAILED:
