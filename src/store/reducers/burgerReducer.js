@@ -3,7 +3,6 @@ import * as types from '../types';
 const initialState = {
   ingredients: null,
   totalPrice: 3.3,
-  loading: false,
   error: false
 };
 
