@@ -85,7 +85,7 @@ class ContactData extends Component {
       price: this.props.totalPrice,
       orderData: formData
     };
-    this.props.initPurchase(order);
+    this.props.initPurchase(order, this.props.token);
   };
 
   validate = (val, rules) => {
@@ -168,13 +168,14 @@ class ContactData extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  initPurchase: order => dispatch(initPurchase(order))
+  initPurchase: (order, token) => dispatch(initPurchase(order, token))
 });
 
 const mapStateToProps = state => ({
   ingredients: state.burgerBuilder.ingredients,
   totalPrice: state.burgerBuilder.totalPrice,
-  loading: state.order.loading
+  loading: state.order.loading,
+  token: state.auth.token
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(

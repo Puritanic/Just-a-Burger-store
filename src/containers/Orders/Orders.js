@@ -8,12 +8,15 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class Orders extends Component {
   componentDidMount() {
-    this.props.fetchOrders();
+    this.props.fetchOrders(this.props.token);
   }
 
   render() {
     let orders = <Spinner />;
     if (!this.props.loading) {
+      if (this.props.orders.lenght < 1) {
+        console.log('gotcha');
+      }
       orders = this.props.orders.map(order => (
         <Order
           key={order.id}
@@ -28,11 +31,12 @@ class Orders extends Component {
 
 const mapStateToProps = state => ({
   orders: state.order.orders,
-  loading: state.order.loading
+  loading: state.order.loading,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchOrders: () => dispatch(fetchOrders())
+  fetchOrders: token => dispatch(fetchOrders(token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));

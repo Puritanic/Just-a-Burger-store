@@ -3,7 +3,8 @@ import * as types from '../types';
 const initialState = {
   ingredients: null,
   totalPrice: 3.3,
-  error: false
+  error: false,
+  building: false
 };
 
 const INGREDIENT_PRICES = {
@@ -24,7 +25,8 @@ export default (state = initialState, action) => {
           // React 16 computed property
           [action.ingredientName]: state.ingredients[action.ingredientName] + 1
         },
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+        building: true
       };
     case types.REMOVE_INGREDIENT:
       return {
@@ -34,7 +36,8 @@ export default (state = initialState, action) => {
           // React 16 computed property
           [action.ingredientName]: state.ingredients[action.ingredientName] - 1
         },
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+        building: true
       };
     case types.SET_INGREDIENTS:
       return {
@@ -46,7 +49,8 @@ export default (state = initialState, action) => {
           meat: action.ingredients.meat
         },
         totalPrice: 3.3,
-        error: false
+        error: false,
+        building: false
       };
     case types.FETCH_INGREDIENTS_FAILED:
       return {

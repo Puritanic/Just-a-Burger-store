@@ -16,16 +16,16 @@ export const purchaseBurgerStart = () => ({
   type: types.PURCHASE_BURGER_START
 });
 
-export const initPurchase = orderData => (dispatch) => {
+export const initPurchase = (orderData, token) => (dispatch) => {
   dispatch(purchaseBurgerStart());
   axios
-    .post('/orders.json', orderData)
+    .post(`/orders.json?auth=${token}`, orderData)
     .then((response) => {
       console.log(response);
       dispatch(purchaseBurgerSuccess(response.data.name, orderData));
     })
-    .catch((error) => {
-      dispatch(purchaseBurgerFailure(orderData.error.msg));
+    .catch((err) => {
+      dispatch(purchaseBurgerFailure(err));
     });
 };
 
@@ -47,10 +47,10 @@ export const fetchOrdersFailure = err => ({
   err
 });
 
-export const fetchOrders = () => (dispatch) => {
+export const fetchOrders = token => (dispatch) => {
   dispatch(fetchOrdersStart());
   axios
-    .get('/orders.json')
+    .get(`/orders.json?auth=${token}`)
     .then((res) => {
       const fetchedOrders = [];
       // eslint-disable-next-line

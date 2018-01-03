@@ -5,7 +5,8 @@ const initialState = {
   token: null,
   userId: null,
   error: null,
-  loading: false
+  loading: false,
+  authRedirectPath: '/'
 };
 
 export default (state = initialState, action) => {
@@ -21,6 +22,8 @@ export default (state = initialState, action) => {
       });
     case types.AUTH_LOGOUT:
       return updateObject(state, { token: null, userId: null });
+    case types.AUTH_SET_REDIRECT:
+      return updateObject(state, { authRedirectPath: action.path });
     case types.AUTH_FAILURE:
       return updateObject(state, { error: action.err, loading: false });
     default:
