@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavigationItems /> should render two NavigationItems without crashing 1`] = `
+<ul>
+  <navigationItem
+    exact={true}
+    link="/"
+  >
+    Burger Builder
+  </navigationItem>
+  <navigationItem
+    link="/auth"
+  >
+    Login
+  </navigationItem>
+</ul>
+`;
