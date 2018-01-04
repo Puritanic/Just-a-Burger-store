@@ -19,7 +19,7 @@ export const purchaseBurgerStart = () => ({
 export const initPurchase = (orderData, token) => (dispatch) => {
   dispatch(purchaseBurgerStart());
   axios
-    .post(`/orders.json?auth=${token}`, orderData)
+    .post(`users/${orderData.userId}/orders.json?auth=${token}`, orderData)
     .then((response) => {
       console.log(response);
       dispatch(purchaseBurgerSuccess(response.data.name, orderData));
@@ -47,10 +47,15 @@ export const fetchOrdersFailure = err => ({
   err
 });
 
-export const fetchOrders = token => (dispatch) => {
+export const fetchOrders = (
+  token = localStorage.getItem('token'),
+  userId = localStorage.getItem('userId')
+) => (dispatch) => {
   dispatch(fetchOrdersStart());
+  console.log(userId);
+  console.log(token);
   axios
-    .get(`/orders.json?auth=${token}`)
+    .get(`users/${userId}/orders.json?auth=${token}`)
     .then((res) => {
       const fetchedOrders = [];
       // eslint-disable-next-line
@@ -66,3 +71,8 @@ export const fetchOrders = token => (dispatch) => {
       dispatch(fetchOrdersFailure(err));
     });
 };
+
+// "orders": {
+//   ".read": "auth !== null",
+//     ".write": "auth !== null"
+// }
