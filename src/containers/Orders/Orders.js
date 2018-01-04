@@ -15,7 +15,7 @@ class Orders extends Component {
     let orders = <Spinner />;
     if (!this.props.loading) {
       if (this.props.orders.length < 1) {
-        console.log('gotcha');
+        // console.log('gotcha');
       }
       orders = this.props.orders.map(order => (
         <Order

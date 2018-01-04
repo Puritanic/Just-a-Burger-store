@@ -24,11 +24,11 @@ export const initIngredients = () => (dispatch) => {
   axios
     .get('https://burger-store.firebaseio.com/ingredients.json')
     .then((response) => {
-      console.log('[Init]', response);
+      // console.log('[Init]', response);
       dispatch(setIngredients(response.data));
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       dispatch(fetchIngredientsFailed());
     });
 };
