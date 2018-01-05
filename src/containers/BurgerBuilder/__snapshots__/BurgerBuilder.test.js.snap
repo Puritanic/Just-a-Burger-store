@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BurgerBuilder /> container should render Burger Builder container correctly 1`] = `
+<aux>
+  <Modal
+    modalClosed={[Function]}
+    show={false}
+  >
+    <OrderSummary
+      ingredients={
+        Object {
+          "salad": 0,
+        }
+      }
+      purchaseCancelled={[Function]}
+      purchaseContinued={[Function]}
+    />
+  </Modal>
+  <aux>
+    <burger
+      ingredients={
+        Object {
+          "salad": 0,
+        }
+      }
+    />
+    <buildControls
+      disabled={
+        Object {
+          "salad": true,
+        }
+      }
+      ordered={[Function]}
+      purchasable={false}
+    />
+  </aux>
+</aux>
+`;

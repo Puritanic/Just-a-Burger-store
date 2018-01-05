@@ -16,7 +16,7 @@ import {
 import { purchaseLoad } from '../../store/actions/orderActions';
 import { setAuthRedirect } from '../../store/actions/auth';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   // constructor(props) {
   //     super(props);
   //     this.state = {...}
