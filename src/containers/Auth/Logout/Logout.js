@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logout } from '../../../store/actions/auth';
-import Spinner from '../../../components/UI/Spinner/Spinner';
+
+import * as actions from '../../../store/actions/index';
 
 class Logout extends Component {
-  componentWillMount = () => {
-    this.props.logout();
-    this.props.history.push('/');
-  };
+    componentDidMount () {
+        this.props.onLogout();
+    }
 
-  render() {
-    return <Spinner />;
-  }
+    render () {
+        return <Redirect to="/"/>;
+    }
 }
 
-const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
-});
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogout: () => dispatch(actions.logout())
+    };
+};
 
-export default connect(null, mapDispatchToProps)(withRouter(Logout));
+export default connect(null, mapDispatchToProps)(Logout);

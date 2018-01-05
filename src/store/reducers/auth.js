@@ -1,32 +1,52 @@
-import * as types from '../types';
-import { updateObject } from '../../helpers';
+import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../../shared/utility';
 
 const initialState = {
-  token: null,
-  userId: null,
-  error: null,
-  loading: false,
-  authRedirectPath: '/'
+    token: null,
+    userId: null,
+    error: null,
+    loading: false,
+    authRedirectPath: '/'
 };
 
-export default (state = initialState, action) => {
-  switch (action.type) {
-    case types.AUTH_START:
-      return updateObject(state, { error: null, loading: true });
-    case types.AUTH_SUCCESS:
-      return updateObject(state, {
-        loading: false,
-        error: null,
-        token: action.idToken,
-        userId: action.userId
-      });
-    case types.AUTH_LOGOUT:
-      return updateObject(state, { token: null, userId: null });
-    case types.AUTH_SET_REDIRECT:
-      return updateObject(state, { authRedirectPath: action.path });
-    case types.AUTH_FAILURE:
-      return updateObject(state, { error: action.err, loading: false });
-    default:
-      return state;
-  }
+const authStart = ( state, action ) => {
+    return updateObject( state, { error: null, loading: true } );
 };
+
+const authSuccess = (state, action) => {
+    return updateObject( state, { 
+        token: action.idToken,
+        userId: action.userId,
+        error: null,
+        loading: false
+     } );
+};
+
+const authFail = (state, action) => {
+    return updateObject( state, {
+        error: action.error,
+        loading: false
+    });
+};
+
+const authLogout = (state, action) => {
+    return updateObject(state, { token: null, userId: null });
+};
+
+const setAuthRedirectPath = (state, action) => {
+    return updateObject(state, { authRedirectPath: action.path })
+}
+
+const reducer = ( state = initialState, action ) => {
+    switch ( action.type ) {
+        case actionTypes.AUTH_START: return authStart(state, action);
+        case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
+        case actionTypes.AUTH_FAIL: return authFail(state, action);
+        case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
+        case actionTypes.SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state,action);
+        default:
+            return state;
+    }
+};
+
+export default reducer;
