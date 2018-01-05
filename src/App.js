@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
